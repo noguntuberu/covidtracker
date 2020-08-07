@@ -100,7 +100,7 @@ router.post('/login', celebrate_1.celebrate({ body: Validation_1.UserSchema }), 
         }
     });
 }); });
-router.post('/verify', celebrate_1.celebrate({ query: Validation_1.TokenSchema }), function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+router.get('/verify', celebrate_1.celebrate({ query: Validation_1.TokenSchema }), function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var token, response, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
