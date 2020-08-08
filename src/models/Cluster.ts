@@ -22,7 +22,8 @@ const ClusterSchema: Schema = new Schema({
     },
     time: {
         type: Date,
-        required: true
+        required: true,
+        default: () => new Date(),
     },
     users: {
         type: Array,
