@@ -85,7 +85,8 @@ var ClusterSchema = new mongoose_1.Schema({
     },
     time: {
         type: Date,
-        required: true
+        required: true,
+        default: function () { return new Date(); },
     },
     users: {
         type: Array,
