@@ -1,7 +1,7 @@
 {
     "2020-06-07": {
         "tasks": [
-            "Research how to find geolocation for displacements (e.g 2m from given location)"
+            "Research how to find geolocation for displacement (e.g 2m from given location)"
         ],
         "Algo": [
             "Generate Location coordinates",
