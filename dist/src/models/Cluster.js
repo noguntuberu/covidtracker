@@ -83,13 +83,10 @@ var ClusterSchema = new mongoose_1.Schema({
             required: true
         }
     },
-    time: {
-        type: Date,
-        required: true
-    },
     users: {
-        type: Array,
-        required: false
+        type: Object,
+        required: false,
+        default: {},
     },
     is_active: {
         type: Boolean,
@@ -104,16 +101,17 @@ var ClusterSchema = new mongoose_1.Schema({
     createdAt: {
         type: Date,
         required: true,
+        default: function () { return new Date(); },
     }
 });
-ClusterSchema.index({ "location": "2dsphere" }, { "unique": false });
+ClusterSchema.index({ "location": "2dsphere" }, { "unique": true });
 var Cluster = exports = mongoose_1.default.model('Cluster', ClusterSchema);
 module.exports.createRecord = function (data) { return __awaiter(void 0, void 0, void 0, function () {
     var new_record;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                new_record = new Cluster(__assign(__assign({}, data), { createdAt: Date.now() }));
+                new_record = new Cluster(__assign({}, data));
                 return [4 /*yield*/, new_record.save()];
             case 1: return [2 /*return*/, _a.sent()];
         }
