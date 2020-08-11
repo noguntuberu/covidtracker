@@ -52,7 +52,6 @@ class Tracker {
         });
     }
 
-
     async addAndProcessClusterQueue(clusters: Array<IClusterInfo>): Promise<IHttpResponse> {
         clusterQueue.push(...clusters);
         this.processClusterQueue()
@@ -66,10 +65,9 @@ class Tracker {
     }
 
     /**
-    * Process test result sent by the test centers.
-    * 
-    * @param testResult
-    */
+     * 
+     * @param clusterInfo 
+     */
     async createorUpdateCluster(clusterInfo: IClusterInfo): Promise<IHttpResponse> {
 
         const { userId, time, location } = clusterInfo;
@@ -158,7 +156,7 @@ class Tracker {
             return ResponseHelper.processFailedResponse(500, 'Something went wrong while trying to create new cluster');
         }
 
-        Logger.info('New cluster created', newCluster)
+        Logger.info(`New cluster created for user ID: ${userId}`, newCluster)
         return ResponseHelper.processSuccessfulResponse({ ...newCluster });
     }
 
@@ -182,13 +180,23 @@ class Tracker {
         return { baseTime, currentTime };
     }
 
-    extracOtherUserIdsFromClusters(userId: string, payload: Array<ICluster>): Array<string> {
+    extracOtherUserIdsFromClusters(userId: string, checkInTime: string, payload: Array<ICluster>): Array<string> {
+        const { baseTime } = this.getTimeRange(checkInTime, 14);
         let combinedIds: Array<string> = [];
         payload.forEach(cluster => {
-            combinedIds = [...combinedIds, ...cluster.users];
+            const { time_joined } = cluster.users[userId];
+            for (let id in cluster.users) {
+                const clusterUser = cluster.users[id];
+                if (time_joined < baseTime) continue;
+                if (clusterUser.time_joined < time_joined && clusterUser.time_left < time_joined) continue;
+                if (id == userId) continue;
+
+                //
+                combinedIds.push(id);
+            }
         });
 
-        return combinedIds.filter(id => userId !== id);
+        return combinedIds;
     }
 
     splitLocationData(location: string): any {
