@@ -35,9 +35,9 @@ class AuthService {
         const password_hash = await this.generatePassword(userInputDTO.password);
         const newUser : IUser = {
             email: userInputDTO.email,
-            notification_token: userInputDTO.notification_token,
             password: password_hash,
-            user_id: nanoid(),
+            notification_token: userInputDTO.notification_token || '',
+            user_id: nanoid()
         };
 
         const userRecord = await UserModel.createRecord(newUser);
@@ -98,6 +98,7 @@ class AuthService {
     }
 
     public async login(userInputDTO: IUserInputDTO): Promise<{ user: IUser; token: string }> {
+        
         try {
             const email = userInputDTO.email;
             Logger.info(`Attempting login for user with email: ${email}`)
@@ -181,14 +182,13 @@ class AuthService {
         token.save()
         Logger.info(`Successfully generated token. Sending token to user's email ${user.email}`);
 
-        const env_vars = process.env
         const host = env_vars.HOST || `http://localhost:${process.env.APP_PORT}`;
-        const from_email = env_vars.SENDGRID_EMAIL || "default_email"
+        const sender_email = env_vars.SENDGRID_EMAIL || ""
 
         // send verification email
           const email: IEmail = {
             to: user.email,
-            from: from_email,
+            from: sender_email,
             subject: "Email Verification",
             text: "Some uselss text",
             html: `<p>Please verify your account by clicking the link: 
