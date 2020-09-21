@@ -13,11 +13,11 @@ const ClusterSchema: Schema = new Schema({
         type: {
             type: String,
             enum: ['Point'],
-            required: true
+            required: true,
         },
         coordinates: {
             type: [Number], //[longitude, latitude]
-            required:true
+            required:true,
         }
     },
     users: {
@@ -28,12 +28,12 @@ const ClusterSchema: Schema = new Schema({
     is_active: {
         type: Boolean,
         required: true,
-        default: true
+        default: true,
     },
     is_deleted: {
         type: Boolean,
         required: true,
-        default: false
+        default: false,
     },
     createdAt: { 
         type: Date, 

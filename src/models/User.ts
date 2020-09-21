@@ -64,7 +64,7 @@ module.exports.readRecord = async (options: any, pagination?: IPagination): Prom
 module.exports.updateRecord = async (options: any, data: IUser): Promise <any> => {
     return await User.update({
         ...processAlternatives(options),
-        is_active: true
+        is_active: true,
     }, { ...data });
 }
 
@@ -74,6 +74,6 @@ module.exports.deleteRecord = async (options: any) => {
         is_active: true
     }, {
         is_active: false,
-        is_deleted: true
+        is_deleted: true,
     });
 }
